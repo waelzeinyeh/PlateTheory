@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" type="text/css" href="bootstrap-grid.min.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<title>Principles of Chromatography</title>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div class="row" id="controls">
+			<div class="col-12" style="font-size: 1.5em; text-align: center;margin-top: 0.4em;margin-bottom: 0.4em"><b><u>Basic Principles of Chromatography Explained by the Plate Theory</u></b></div>
+			<div class="col-12">
+				This application has been developed for teaching purposes and addresses undergraduate students with courses in introduction to chromatography.<br><br>You will be able to observe the behavior of various analytes in a chromatographic column depending on the number of column plates and the affinity of the studied compounds for the stationary and the mobile phases (partition coefficient).<br><br>The calculations used in this application are based on the plate theory of chromatography, developped by the inventors of liquid/liquid chromatography Martin and Synge<SUP>*</SUP>.<br><br><br><i>* Martin AJP, Synge RLM. A new form of chromatogram employing two liquid phases. Biochem J. 1941 ; 35(12) : 1358–68</i>.
+			</div>
+		</div>
+
+		<div class="row" id="controls">
+			<div class="col-12" style="margin-bottom :0.3rem ; margin-top: 0.3rem;">Start by entering the number of compounds to inject on the column, and the number of column plates (these two numbers were limited to 4 and 2000, in order to avoid excessive calculation time):</div>
+			<div class="col-12" style="margin-bottom :0.3rem ; margin-top: 0.3rem">Number of compounds (1 to 4): <input id="nb_cpd_input" type="number" min="1" max="4" value="1" oninput="nb_but_act()"></div>
+			<div class="col-12" style="margin-bottom :0.3rem ; margin-top: 0.3rem">Number of column plates (10 to 2000): <input id="nb_plt_input" type="number" min="10" max="2000" value="100" oninput="nb_but_act()"></div>
+			<div class="col-12"><input id="nb_but" type="button" value="Apply" disabled>
+			</div>
+			<div class="col-12"><i>Note: In this application, the column is supposed to have the same plate number with respect to all analysed compounds. In reality, this is not always true.</i>
+			</div>
+		</div>
+
+		<div class="row" id="cpd_list">
+			<div class="col-12" style="margin-bottom :8px ; margin-top: 16px">
+				Then, enter the partition coefficient (K) for each compound:</div>
+			<div class="col-12" style="margin-bottom :8px">
+				Partition coeff. = (Concentration in stationary phase / Concentration in mobile phase)</div>
+			<div class="col-12" style="margin-bottom :8px">
+				...in each column plate.
+			</div>
+			<div class="col-11">
+				<table id="c_table">
+					<tr>
+						<td style="color:rgb(31, 119, 180)">
+							Compound 1 :
+						</td>
+						<td><input id="lambda_1" type="number" min="0" step="0.01" value="1" oninput="cpd_but_act()"></td>
+					</tr>
+				</table>
+				<input id="cpd_but" type="button" value="Apply" disabled>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col">
+				<div id="calc_container">
+					<div class="row">
+						<div class="col-12" style="font-size: 1.5em;background-color: antiquewhite;margin-bottom :8px"><b>Step-by-step equilibration table:</b></div>
+						<div class="col-12" style="margin-bottom :8px">The table below shows the concentration of the compound(s) in the stationary and mobile phases of the column.</div>
+						<div class="col-12" style="margin-bottom :8px">At the beginning, the compound(s) are injected with the mobile phase, therfore all of the concentration (100%) is found in the mobile phase of the 1<SUP>st</SUP> plate.</div>
+						<div class="col-12" style="margin-bottom :8px">You can start by equilibrating the column, plate by plate, by hitting the button "Equilibrate".</div>
+						<div class="col-12" style="margin-bottom :8px">After an equilibration step, you will be able to push the mobile phase. In this step the mobile phase is moved to the next plate, carrying through its corresponding concentration. Once the mobile phase have been pushed, you can proceed to another equilibration as previously.
+						</div>
+						<div class="col-auto">
+							<div id="calc_div" class="tableFixHead">
+								<table id="calc_table">
+									<thead id="calc_head">
+									</thead>
+									<tbody id="calc_body">
+									</tbody>
+								</table>
+							</div>
+							<div style="margin-top: 8px; margin-bottom: 8px"><input type="checkbox" id="autoscroll" style="width:2em" checked><label for="autoscroll" style="background-color: antiquewhite">Auto-scroll the table</label></div>
+						</div>
+						<div style="display: flex; flex-direction: column">
+							<input id="eq_but" type="button" value="Equilibrate">
+							<span id="wait1" style="visibility: hidden;">Calculating!</span>
+							<input id="re_but" type="button" value="Reset">
+						</div>
+
+						<div class="col-11 col-lg-5" id="eq_graph"></div>
+
+						<div class="col-12" style="margin-top :8px;margin-bottom :16px">Click <span onclick="info_table()" style="color:blue;text-decoration: underline; cursor:pointer">here</span> to obtain more details about the table above.</div>
+						<div class="col-12" style="display:none;background-color:antiquewhite" id="info_table_div">
+							The calculations in the table have been slightly simplified compared to the original Martin & Synge article. We used two assumptions in order to make the results easier to interpret:<br><br>
+							- First, we considered that the volumes of the stationary phase and the mobile phase in each plate were equal. In reality, these two volumes may not be equal and depend on the column used.<br><br>
+							- Second, every time you click on ‘Push mobile phase’, all the content of the mobile phase of a plate goes to the next plate. However, the actual model developped by Martin & Synge considers that, at each step, only an infinitesimal fraction of the mobile phase passes to the next plate.<br><br>
+							<span onclick="info_table_hide()" style="color:blue;text-decoration: underline; cursor:pointer">Hide...</span>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div id="play_container">
+			<div class="row">
+				<div class="col-12" style="font-size: 1.5em;background-color: antiquewhite;margin-bottom :8px"><b>Continuous elution and chromatogram simulation: </b></div>
+				<div class="col-12" style="margin-bottom: 8px">Here you can view an animation of your compounds moving along the column.</div>
+				<div class="col-12" style="margin-bottom: 8px">You can also observe a depiction of what a detector (like a UV-spectrometer) sees at the output of the column. This is what we call a "Chromatogram"(<span onclick="info_play()" style="color:blue;text-decoration: underline; cursor:pointer">click here</span> to see more details about the calculations).</div>
+				<div class="col-12" style="padding-top: 8px;display:none;background-color:antiquewhite" id="info_play_div">In the present application, we used an approximated formula proposed by Martin & Synge to calculate the concentrations on the plates. This formula allows to get rid of the very long factorials calculations which are present in the exact formula.<br><br>Also, as in the table above, we considered that the volumes of the mobile phase and the stationary phase in the column are equal.<br>This is not necessarily true for all columns, and a different ratio will give a different chromatogram, because the ratio v<SUB>s</SUB>/v<SUB>m</SUB> changes the P constant (see the below section about the number of plates estimation).<br><br><span onclick="info_play_hide()" style="color:blue;text-decoration: underline; cursor:pointer">Hide...</span></div>
+				<div class="col-12" style="margin-bottom: 8px">Before starting the simulation, some information about the column and the operating conditions are needed:</div>
+				<div class="col-12" style="margin-bottom :0.3rem ; margin-top: 0.3rem">Column dead volume (mL): <input id="dead_vol_input" type="number" min="0.01" step="0.01" value="1"> <span onclick="info_dead()" style="color:blue;text-decoration: underline; cursor:pointer">(What is it?)</span></div>
+				<div class="col-12" style="margin-bottom: 8px;display:none;background-color:antiquewhite" id="info_dead_div">The dead volume is the volume of the mobile phase inside the column. It can be calculated as follows:<br>Dead volume= Column volume X Stationary phase porosity<br><span onclick="info_dead_hide()" style="color:blue;text-decoration: underline; cursor:pointer">Hide...</span></div>
+				<div class="col-12" style="margin-bottom :0.3rem ; margin-top: 0.3rem">Mobile phase flow rate (mL/min): <input id="flow_input" type="number" min="0.01" step="0.01" value="1"></div>
+			</div>
+
+			<div class="row">
+				<div class="col-12" style="margin-bottom: 8px"><input id="play_but" type="button" value="Play"></div>
+			</div>
+			<div class="row no-gutters justify-content-center align-items-center">
+				<div class="col-2 col-md-1">
+					<img src="IN.png" width="100%" />
+				</div>
+				<div class="col-6 col-lg-10">
+					<canvas id="column"></canvas>
+				</div>
+				<div class="col-2 col-md-1">
+					<img src="OUT.png" width="100%" />
+				</div>
+
+			</div>
+
+
+			<div class="row">
+				<div class="col-11" id="play_graph"></div>
+			</div>
+		</div>
+		<div id="further_container">
+			<div class="row">
+				<div class="col-12" style="font-size: 1.5em;background-color: antiquewhite;margin-bottom :8px"><b>To go further: </b></div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">According to the plate theory, the chromatogram allows us to calculate some interesting properties about the column and the compounds.<br><br>Click to see how to calculate <span onclick="info_nb()" style="color:blue;text-decoration: underline; cursor:pointer">the number of plates</span> of the column, or <span onclick="info_K()" style="color:blue;text-decoration: underline; cursor:pointer">the partition coefficient</span> of the compounds.</div>
+			</div>
+			<div class="row" style="display:none;background-color:antiquewhite;margin-bottom: 20px" id="info_nb_div">
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">
+					<b>How to calculate the number of plates of a column?</b>
+					<span onclick="info_nb_hide()" style="color:blue;text-decoration: underline; cursor:pointer">Hide...</span>
+				</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">
+					Using a mathematical developpement, based on a step-by-step equilibration identical to what is shown in the table above, it can be demonstrated<SUP>*</SUP> that the chromatographic peak of a given compound follows this equation:</div>
+				<div class="col-12 col-md-10 col-lg-6" style="padding-top:8px;padding-bottom:8px">
+					<img src="plt1.png" width="100%" />
+				</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">
+					A chromatographic peak derived from the plate theory is not exactly a gaussian peak. But when the number of column plates is big enough (i.e. n>100), the chromatographic peak becomes very close to a normal gaussian peak, as shown in the graphics below:</div>
+				<div class="col-12 col-md-10 col-lg-6">
+					<img src="plt2.png" width="100%" />
+				</div>
+				<div class="col-12 col-md-10 col-lg-6">
+					<img src="plt3.png" width="100%" />
+				</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">
+					As we know from statistics courses, a gaussian peak is characterized by its mean μ and its standard deviation σ.<br><br>
+					In the case of our chromatographic peak, it can be shown<SUP>**</SUP> that the gaussian approximation of the chromatographic peak has these parameters:</div>
+				<div class="col-12 col-md-10 col-lg-4">
+					<img src="plt4.png" width="100%" />
+				</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">Where <i>P</i>, <i>F</i> and <i>n</i> have the same meanings as above.<br><br>By dividing the 1<SUP>st</SUP> equation by the 2<SUP>nd</SUP> one:</div>
+				<div class="col-12 col-md-10 col-lg-4"><img src="plt5.png" width="100%" />
+				</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">In summary, we need to know the mean μ and the standard deviation σ of one of the chromatogram peaks to calculate the number of column plates n.<br><br>
+					The mean of a gaussian peak is simply the distance between the peak summit and the origin of the X axis. However, the standard deviation can not be measured directly but can be approximated by measuring the peak Full Width at Half Maximum (FWHM), which is equal to 2.355 times the standard deviation<SUP>***</SUP>.<br>Therefore:</div>
+				<div class="col-12 col-md-10 col-lg-4">
+					<img src="plt6.png" width="100%" />
+				</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">This equation allows you to estimate the number of plates of a column thanks to a chromatogram.<br><br>You can use a ruler to measure the equation parameters as shown in the example below:</div>
+				<div class="col-12 col-lg-8">
+					<img src="plt7.png" width="100%" />
+				</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">You can now go back to the chromatogram you obtained in the last part of this application and measure the number of plates. Then, you can compare this value with the number of plates you have initially entered at the top of the page.</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px"><i><b>References:</b><br><br>* Said AS. Theoretical-plate concept in chromatography. AIChE J. 1956 ; 2(4) : 477-81<br><br>** Scott RPW. The Plate Theory of Chromatography. 1<SUP>st</SUP> ed. Integritext UK; 2014<br><br>*** en.wikipedia.org/wiki/Full_width_at_half_maximum</i></div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">
+					<span onclick="info_nb_hide()" style="color:blue;text-decoration: underline; cursor:pointer">Hide...</span>
+				</div>
+			</div>
+			<div class="row" style="display:none;background-color:antiquewhite" id="info_K_div">
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">
+					<b>The plate theory and the partition coefficients:</b>
+					<span onclick="info_K_hide()" style="color:blue;text-decoration: underline; cursor:pointer">Hide...</span>
+				</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">
+					We will start by defining the Capacity Factor (or the Retention Factor), generally noted as k':</div>
+				<div class="col-12 col-md-10 col-lg-6" style="padding-top:8px;padding-bottom:8px">
+					<img src="plt8.png" width="100%" />
+				</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">
+					As we have seen in the last section about the number of plates, the retention time of a compound is given by the equation of the mean of the gaussian peak:</div>
+				<div class="col-12 col-md-10 col-lg-6" style="padding-top:8px;padding-bottom:8px">
+					<img src="plt9.png" width="100%" />
+				</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">
+					And for an unretained compound (with a partition coefficien K=0) the equation becomes:</div>
+				<div class="col-12 col-md-10 col-lg-6" style="padding-top:8px;padding-bottom:8px">
+					<img src="plt10.png" width="100%" />
+				</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">
+					By substituting t<SUB>R</SUB> and t<SUB>0</SUB> in the equation of k' and doing some very simple maths:</div>
+				<div class="col-12 col-md-10 col-lg-6" style="padding-top:8px;padding-bottom:8px">
+					<img src="plt11.png" width="100%" />
+				</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">
+					This equation tells us that, according to the plate theory, we need to know v<SUB>m</SUB> and v<SUB>s</SUB> (which are the volumes of mobile phase and stationary phase for a plate) in order to calculate the partition coefficient K of our compound from the chromatogram.<br><br>v<SUB>m</SUB> and v<SUB>s</SUB> are not always precisely known, but what is interesting is to compare two retention factors k' of two compounds, as:</div>
+				<div class="col-12 col-md-10 col-lg-6" style="padding-top:8px;padding-bottom:8px">
+					<img src="plt12.png" width="100%" />
+				</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">
+					Therefore, by measuring the dead time t<SUB>0</SUB> and the retention times t<SUB>R</SUB> of two compounds, we can calculate the ratio of their partition coefficients:</div>
+				<div class="col-12 col-lg-8">
+					<img src="plt13.png" width="100%" />
+				</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">You can now go back to the application and measure the ratio of the partition coefficients of two compounds from your chromatogram.<br>Don't forget to inject an unretained compound in order to measure t<SUB>0</SUB>!<br>Then, you can compare this value with the partition coefficients you have initially entered at the top of the page.</div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">
+					<span onclick="info_K_hide()" style="color:blue;text-decoration: underline; cursor:pointer">Hide...</span>
+				</div>
+			</div>
+		</div>
+		<div id="about_container">
+			<div class="row">
+				<div class="col-12" style="font-size: 1.5em;background-color: antiquewhite;margin-bottom :8px"><b>About:</b></div>
+				<div class="col-12" style="padding-top:8px;padding-bottom:8px">This web application was written by Wael Zeinyeh (assistant professor, faculty of pharmacy, Université de Lyon).<br><br>It was evaluated and commented by Anne Denuzière, Lars-Petter Jordheim and Christelle Machon.<br><br>This application is intended for educational use in an academic environment only.</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="plotly-latest.min.js"></script>
+<script src="script.js"></script>
+
+</html>
